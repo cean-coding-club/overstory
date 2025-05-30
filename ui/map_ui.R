@@ -67,7 +67,8 @@ map_ui <- fluidPage(
         tabPanel(
           title = "Map",
           wellPanel(
-            "This is the map tab — tree plot locations will be displayed here."
+            "This is the map tab — tree plot locations will be displayed here.",
+            leafletOutput("nav_map")
           )
         )
       )
