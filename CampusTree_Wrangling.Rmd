@@ -1,0 +1,78 @@
+---
+title: "CampusTree_Wrangling"
+author: "NGO"
+date: "2025-08-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+library(tidyverse)
+library(galah)
+```
+
+```{r}
+(Tree <- as.data.frame(read_csv("data/Treedata_04082025.csv")) |> 
+    filter(TreeRem != "Removed",
+           TreeHeight > 2)  #Delete rows of trees that were removed (n = 820), and trees smaller than 2m (n = 405)
+ 
+    
+)
+```
+
+```{r}
+nlevels(as.factor(Tree$SpName))  # 280 species in Campus originally, 255 after filtering for height and removed trees.
+```
+
+```{r}
+unique(Tree$SpName) |> 
+  as.factor() |> 
+  sort()
+  
+```
+
+
+```{r}
+summary(as.factor(Tree$LocModName))
+```
+
+```{r}
+Tree |> 
+  ggplot()+
+  geom_histogram(aes(TreeHeight), fill = "darkgreen", col = "grey")+
+  theme_bw()+
+  labs(title = "Distribution of Tree Height (m)",
+       y = "Count",
+       x = "Tree Height (m)")+
+  theme(plot.title = element_text(hjust = .5))
+```
+
+```{r}
+Tree |> 
+  ggplot()+
+  geom_histogram(aes(TreeSpread), fill = "darkgreen", col = "grey")+
+  theme_bw()+
+  labs(title = "Distribution of Canopy Spread (m)",
+       y = "Count",
+       x = "Canopy Spread (m)")+
+  theme(plot.title = element_text(hjust = .5))
+```
+
+According to the Australian Plants Society NSW a Tree is a a plant with a single trunk that grows over 5m (<https://resources.austplants.com.au/plant-database/>).
+
+```{r}
+(treeSP <- unique(Tree$SpName))
+
+(treeSP50 <- treeSP[1:50])
+```
+
+```{r}
+(SPinfo <- galah_call() |> 
+   galah_filter(scientificName %in% treeSP50) |> 
+   atlas_species())
+```
+
