@@ -17,16 +17,24 @@ library(galah)
 
 ```{r}
 (Tree <- as.data.frame(read_csv("data/Treedata_04082025.csv")) |> 
-    filter(TreeRem != "Removed" ,
-           FrmVigName != "Dead")  #Delete rows of trees that were remoived (n = 820), and rows of dead trees (n = 64)
+    filter(TreeRem != "Removed",
+           TreeHeight > 2)  #Delete rows of trees that were removed (n = 820), and trees smaller than 2m (n = 405)
  
     
 )
 ```
 
 ```{r}
-nlevels(as.factor(Tree$SpName)) #268 species in Campus
+nlevels(as.factor(Tree$SpName))  # 280 species in Campus originally, 255 after filtering for height and removed trees.
 ```
+
+```{r}
+unique(Tree$SpName) |> 
+  as.factor() |> 
+  sort()
+  
+```
+
 
 ```{r}
 summary(as.factor(Tree$LocModName))
