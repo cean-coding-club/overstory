@@ -1,6 +1,9 @@
 #01 : source libraries before app starts ----
 library(shiny)
 library(DT)
+library(osrm)
+library(leaflet)
+library(sf)
 
 #02 : Placeholder, read in the database ----
 
